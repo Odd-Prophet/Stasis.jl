@@ -3,7 +3,7 @@ include("src/Stasis.jl")
 using .Stasis
 
 options = Dict(
-  "pages_directory" => "example/src/pages"
+  "source_directory" => "example/src"
 )
 
 Stasis.build(options)
