@@ -21,7 +21,7 @@ function build_content(files, options)
     weave(
       file,
       template="src/templates/default.html",
-      out_path=options["build_dir"]
+      out_path=joinpath(options["build_dir"], basename(file)[1:end-4], "index.html")
     )
   end
 end
@@ -31,6 +31,5 @@ function build_pages(files, options)
     println(file)
   end
 end
-
 
 end
