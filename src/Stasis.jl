@@ -1,7 +1,8 @@
 module Stasis
 export build
 
-using Mustache, Weave
+include("../Affinity.jl/src/Affinity.jl")
+using .Affinity, Mustache, Weave
 
 function build(options)
   rm(options["build_dir"], force=true, recursive=true)
