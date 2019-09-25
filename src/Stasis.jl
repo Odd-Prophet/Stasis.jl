@@ -1,12 +1,16 @@
 module Stasis
-export build
+export copy, build
 
 include("../../Affinity.jl/src/Affinity.jl")
 using .Affinity, Weave
 
+function copy(input, output)
+  write(output, read(input, String))
+end
+
 function build(input, output, params...)
   html = Affinity.compile(read(input, String), params...)
-  println(html)
+  write(output, html)
 end
 
 # function build(options)
