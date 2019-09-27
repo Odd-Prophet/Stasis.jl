@@ -17,14 +17,19 @@ end
 function serve(dir)
   cd(dir)
 
-  HTTP.listen("127.0.0.1", 8081) do req
-    HTTP.setheader(req, "Content-Type" => "text/html")
-    write(req, "target uri: $(req.message.target)<BR>")
-    write(req, "request body:<BR><PRE>")
-    write(req, read(req))
-    write(req, "</PRE>")
-    return
+  HTTP.serve() do request::HTTP.Request
+    @show request
+    @show request.method
+    @show HTTP.header(request, "Content-Type")
+    @show HTTP.payload(request)
+    try
+      file = request.target == "/" ? "index.html" : request.target[2:]
+      return HTTP.Response(read(file))
+    catch e
+      return HTTP.Response(404, "Error: $e")
+    end
   end
+
 end
 
 end
