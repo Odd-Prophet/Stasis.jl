@@ -5,8 +5,14 @@ include("../../Affinity.jl/src/Affinity.jl")
 using .Affinity
 using HTTP
 
-function build(input, output, params...)
-  html = Affinity.compile(read(input, String), params...)
+function build(input, output; params...)
+  context = Dict()
+
+  for (k, v) in params
+    context["$k"] = v
+  end
+
+  html = "<!DOCTYPE html>" * Affinity.compile(read(input, String), ctx=context)
   write(output, html)
 end
 
@@ -23,7 +29,7 @@ function serve(dir)
     @show HTTP.header(request, "Content-Type")
     @show HTTP.payload(request)
     try
-      file = request.target == "/" ? "index.html" : request.target[2:]
+      file = request.target == "/" ? "index.html" : request.target[2:end]
       return HTTP.Response(read(file))
     catch e
       return HTTP.Response(404, "Error: $e")
