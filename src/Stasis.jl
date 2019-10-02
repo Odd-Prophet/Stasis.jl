@@ -12,7 +12,7 @@ function build(input, output; params...)
     context[Symbol(k)] = v
   end
 
-  html = "<!DOCTYPE html>" * Affinity.compile(read(input, String), ctx=context)
+  html = "<!DOCTYPE html>" * Affinity.compile(read(input, String), params=context)
   write(output, html)
 end
 
