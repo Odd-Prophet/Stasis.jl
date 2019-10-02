@@ -9,7 +9,7 @@ function build(input, output; params...)
   context = Dict()
 
   for (k, v) in params
-    context["$k"] = v
+    context[Symbol(k)] = v
   end
 
   html = "<!DOCTYPE html>" * Affinity.compile(read(input, String), ctx=context)
