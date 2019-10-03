@@ -17,7 +17,7 @@ function build(input, output; params...)
 end
 
 function copy(input, output)
-  write(output, read(input, String))
+  cp(input, output, force=true)
 end
 
 function serve(dir)
