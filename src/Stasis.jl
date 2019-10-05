@@ -32,7 +32,7 @@ function serve(dir)
       file = request.target == "/" ? "index.html" : request.target[2:end]
       return HTTP.Response(read(file))
     catch e
-      return HTTP.Response(404, "Error: $e")
+      return HTTP.Response(404, read("404.html"))
     end
   end
 
