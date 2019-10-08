@@ -1,9 +1,9 @@
 module Stasis
-export build, copy, serve
+export build, copy, parse, serve
 
 include("../../Affinity.jl/src/Affinity.jl")
 using .Affinity
-using HTTP
+using HTTP, Markdown, TOML
 
 function build(input, output; params...)
   context = Dict()
@@ -18,6 +18,14 @@ end
 
 function copy(input, output)
   cp(input, output, force=true)
+end
+
+function parse(file)
+  data = split(read(file, String), "+++")
+  meta = TOML.parse(data[2])
+  content = Markdown.parse(data[3]) |> Markdown.html()
+
+  return (meta, content)
 end
 
 function serve(dir)
