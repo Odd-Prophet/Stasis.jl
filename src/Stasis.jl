@@ -9,7 +9,7 @@ function build(input, output; params...)
   context = Dict()
 
   for (k, v) in params
-    context[Symbol(k)] = v
+    context[k] = v
   end
 
   html = "<!DOCTYPE html>" * Affinity.compile(read(input, String), params=context)
@@ -21,9 +21,9 @@ function copy(input, output)
 end
 
 function parse(file)
-  data = split(read(file, String), "+++")
-  meta = TOML.parse(data[2])
-  content = Markdown.parse(data[3]) |> Markdown.html()
+  data = split(read(file, String), "+++", limit=2, keepempty=false)
+  meta = TOML.parse(data[1])
+  content = Markdown.parse(data[2])
 
   return (meta, content)
 end
