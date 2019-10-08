@@ -9,8 +9,10 @@ function build(input, output; params...)
   context = Dict()
 
   for (k, v) in params
-    context[k] = v
+    context["$k"] = v
   end
+
+  println(context)
 
   html = "<!DOCTYPE html>" * Affinity.compile(read(input, String), params=context)
   write(output, html)
@@ -23,7 +25,7 @@ end
 function parse(file)
   data = split(read(file, String), "+++", limit=2, keepempty=false)
   meta = TOML.parse(data[1])
-  content = Markdown.parse(data[2])
+  content = Markdown.html(Markdown.parse(data[2]))
 
   return (meta, content)
 end
