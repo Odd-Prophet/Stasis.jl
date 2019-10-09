@@ -1,5 +1,5 @@
 module Stasis
-export build, copy, parse, serve
+export build, copy, parse_markdown, parse_toml, serve, walk
 
 include("../../Affinity.jl/src/Affinity.jl")
 using .Affinity
@@ -12,22 +12,21 @@ function build(input, output; params...)
     context["$k"] = v
   end
 
-  println(context)
-
-  html = "<!DOCTYPE html>" * Affinity.compile(read(input, String), params=context)
-  write(output, html)
+  write(output, Affinity.compile(read(input, String), params=context))
 end
 
 function copy(input, output)
   cp(input, output, force=true)
 end
 
-function parse(file)
+function parse_markdown(file)
   data = split(read(file, String), "+++", limit=2, keepempty=false)
-  meta = TOML.parse(data[1])
-  content = Markdown.html(Markdown.parse(data[2]))
+  return Markdown.html(Markdown.parse(data[2]))
+end
 
-  return (meta, content)
+function parse_toml(file)
+  data = split(read(file, String), "+++", limit=2, keepempty=false)
+  return TOML.parse(data[1])
 end
 
 function serve(dir)
@@ -45,7 +44,18 @@ function serve(dir)
       return HTTP.Response(404, read("404.html"))
     end
   end
+end
 
+function walk(directory)
+  data = []
+
+  for (root, dirs, files) in walkdir(directory)
+    for file in files
+      push!(data, joinpath(root, file))
+    end
+  end
+
+  return data
 end
 
 end
