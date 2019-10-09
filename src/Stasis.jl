@@ -34,12 +34,16 @@ function serve(dir)
 
   HTTP.serve() do request::HTTP.Request
     @show request
-    @show request.method
-    @show HTTP.header(request, "Content-Type")
-    @show HTTP.payload(request)
+    
+    relative_target = request.target[2:end]
+
     try
-      file = request.target == "/" ? "index.html" : request.target[2:end]
-      return HTTP.Response(read(file))
+      if isdir(relative_target) || isempty(relative_target)
+        file = joinpath(relative_target, "index.html")
+        return HTTP.Response(read(file))
+      else
+        return HTTP.Response(read(relative_target))
+      end
     catch e
       return HTTP.Response(404, read("404.html"))
     end
