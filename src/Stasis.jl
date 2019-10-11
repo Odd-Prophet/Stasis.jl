@@ -1,28 +1,23 @@
 module Stasis
-export build, config, copy, parse_markdown, parse_toml, serve, walk
+export build, copy, parse_markdown, parse_toml, serve, walk
 
 include("../../Affinity.jl/src/Affinity.jl")
 using .Affinity
 using HTTP, Markdown, TOML
 
-source_dir = ""
-build_dir = ""
-template_engine = ""
-
-function config(; params...)
-end
-
-function build(;input, output, params...)
+function build(; template, output, params...)
   context = Dict()
 
   for (k, v) in params
     context["$k"] = v
   end
 
-  write(output, Affinity.compile(read(input, String), params=context))
+  html = Affinity.compile(read(template, String), params=context)
+  
+  write(output, html)
 end
 
-function copy(input, output)
+function copy(; input, output)
   cp(input, output, force=true)
 end
 
