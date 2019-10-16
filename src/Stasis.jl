@@ -14,7 +14,7 @@ function build(; template, output, params...)
 
   html = Affinity.compile(read(template, String), params=context)
   
-  write(output, html)
+  write(output, "<!DOCTYPE html>" * html)
 end
 
 function copy(; input, output)
