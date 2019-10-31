@@ -14,6 +14,8 @@ function build(; template, output, params...)
 
   html = Affinity.compile(read(template, String), params=context)
   
+  mkpath(match(r"^(.+)/([^/]+)$", output)[1])
+
   write(output, "<!DOCTYPE html>" * html)
 end
 
