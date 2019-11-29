@@ -1,0 +1,7 @@
+name = "Stasis"
+uuid = "073b6281-0e33-409f-94e9-2b8f4f12b2b3"
+version = "0.1.0"
+author = ["Tim Whitaker <tim@whitsworks.com>"]
+
+[deps]
+Affinity = "0.1.0"
