@@ -1,8 +1,7 @@
 module Stasis
 export build, copy, parse_markdown, parse_toml, serve, walk
 
-include("../../Affinity.jl/src/Affinity.jl")
-using .Affinity
+using Affinity
 using HTTP, Markdown, TOML
 
 function build(; template, output, params...)
