@@ -4,4 +4,4 @@ version = "0.1.0"
 author = ["Tim Whitaker <tim@whitsworks.com>"]
 
 [deps]
-Affinity = "0.1.0"
+Affinity = "2df6ce6c-58d6-499a-9fe0-35378bf492c1"
