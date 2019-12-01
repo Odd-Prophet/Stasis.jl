@@ -24,7 +24,8 @@ end
 
 function parse_markdown(file)
   data = split(read(file, String), "+++", limit=2, keepempty=false)
-  return Markdown.html(Markdown.latex(Markdown.parse(data[2])))
+
+  return Markdown.html(map(x -> typeof(x) == Markdown.LaTeX ? Markdown.latex(x) : x, Markdown.parse(data[2])))
 end
 
 function parse_toml(file)
