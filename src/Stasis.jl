@@ -23,8 +23,15 @@ function copy(; input, output)
 end
 
 function parse_markdown(file)
-  data = split(read(file, String), "+++", limit=2, keepempty=false)
-  return Markdown.html(Markdown.parse(data[2]))
+  data = Markdown.parse(split(read(file, String), "+++", limit=2, keepempty=false)[2])
+
+  for block in data.content
+    if typeof(block) == Markdown.LaTeX
+      block.formula = "\$" * block.formula * "\$"
+    end
+  end
+
+  return Markdown.html(data)
 end
 
 function parse_toml(file)
