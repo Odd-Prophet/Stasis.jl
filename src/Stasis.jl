@@ -13,10 +13,10 @@ function build(; template, output, params...)
   end
 
   # Inject partials
-  src = replace(read(template, String), r"partial(\"(.*)\")" => s"$(read(\1, String))")
+  src = replace(read(template, String), r"partial((.*))" => s"$(read(\1, String))")
 
   println(src)
-  
+
   html = Affinity.compile(src, params=context)
   
   mkpath(match(r"^(.+)/([^/]+)$", output)[1])
