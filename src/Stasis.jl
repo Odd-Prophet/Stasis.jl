@@ -7,11 +7,16 @@ using HTTP, Markdown, TOML
 function build(; template, output, params...)
   context = Dict()
 
+  # Add context variables to global
   for (k, v) in params
     context["$k"] = v
   end
 
-  html = Affinity.compile(read(template, String), params=context)
+  src = read(template, String)
+
+  replace!(src, r"partial(\"(.*)\")" => s"$(read(\1, String))")
+
+  html = Affinity.compile(src, params=context)
   
   mkpath(match(r"^(.+)/([^/]+)$", output)[1])
 
