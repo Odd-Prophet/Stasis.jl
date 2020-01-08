@@ -14,7 +14,7 @@ function build(; template, output, params...)
 
   # Inject partials
   src = replace(read(template, String), r"partial((.*))" => (m) -> begin
-    filename = chop(replace(m, r"partial" => ""))
+    filename = chop(replace(m, r"partial" => ""), head=2, tail=2)
     return read(filename, String)
   end)
 
