@@ -12,9 +12,8 @@ function build(; template, output, params...)
     context["$k"] = v
   end
 
-  src = read(template, String)
-
-  replace!(src, r"partial(\"(.*)\")" => s"$(read(\1, String))")
+  # Inject partials
+  src = replace(read(template, String), r"partial(\"(.*)\")" => s"$(read(\1, String))")
 
   html = Affinity.compile(src, params=context)
   
