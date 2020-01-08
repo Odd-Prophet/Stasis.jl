@@ -7,7 +7,7 @@ using HTTP, Markdown, TOML
 function build(; template, output, params...)
   context = Dict()
 
-  # Add context variables to global
+  # Add context variables to global context
   for (k, v) in params
     context["$k"] = v
   end
@@ -18,12 +18,9 @@ function build(; template, output, params...)
     return read(filename, String)
   end)
 
-  println(src)
-
+  # Compile and write
   html = Affinity.compile(src, params=context)
-  
   mkpath(match(r"^(.+)/([^/]+)$", output)[1])
-
   write(output, "<!DOCTYPE html>" * html)
 end
 
