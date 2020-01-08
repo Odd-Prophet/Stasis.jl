@@ -13,7 +13,10 @@ function build(; template, output, params...)
   end
 
   # Inject partials
-  src = replace(read(template, String), r"partial((.*))" => () -> read(s"\1", String))
+  src = replace(read(template, String), r"partial((.*))" => (m) -> begin
+    filename = chop(replace(m, r"partial(", ""))
+    return read(filename, String)
+  end)
 
   println(src)
 
