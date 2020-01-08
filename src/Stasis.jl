@@ -13,7 +13,7 @@ function build(; template, output, params...)
   end
 
   # Inject partials
-  src = replace(read(template, String), r"partial((.*))" => s"$(read(\1, String))")
+  src = replace(read(template, String), r"partial((.*))" => read(s"\1", String))
 
   println(src)
 
