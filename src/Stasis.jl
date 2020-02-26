@@ -79,10 +79,10 @@ function walk(dir)
 end
 
 function watch(fn, dir)
-  while true
-    @sync begin
-      for folder in glob(joinpath(dir, "*"))
-        @async begin
+  @sync begin
+    for folder in glob(joinpath(dir, "*"))
+      @async begin
+        while true
           event = watch_folder(folder)
           print(event)
         end
