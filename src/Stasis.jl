@@ -2,7 +2,7 @@ module Stasis
 export build, copy, parse_markdown, parse_toml, serve, walk, watch
 
 using Affinity
-using FileWatching, HTTP, Markdown, TOML
+using FileWatching, Glob, HTTP, Markdown, TOML
 
 function build(; template, output, params...)
   context = Dict()
@@ -80,7 +80,7 @@ end
 
 function watch(fn, dir)
   while true
-    event = watch_folder(dir)
+    event = watch_file.(glob(joinpath(dir, "**/*")))
 
     print(event)
 
