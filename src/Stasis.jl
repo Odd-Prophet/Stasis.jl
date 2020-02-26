@@ -1,8 +1,8 @@
 module Stasis
-export build, copy, parse_markdown, parse_toml, serve, walk
+export build, copy, parse_markdown, parse_toml, serve, walk, watch
 
 using Affinity
-using HTTP, Markdown, TOML
+using FileWatching, HTTP, Markdown, TOML
 
 function build(; template, output, params...)
   context = Dict()
@@ -66,16 +66,26 @@ function serve(dir)
   end
 end
 
-function walk(directory)
+function walk(dir)
   data = []
 
-  for (root, dirs, files) in walkdir(directory)
+  for (root, dirs, files) in walkdir(dir)
     for file in files
       push!(data, joinpath(root, file))
     end
   end
 
   return data
+end
+
+function watch(dir, fn)
+  @async while true
+    event = watch_folder(dir)
+
+    if event.changed
+        fn()
+    end
+  end
 end
 
 end
