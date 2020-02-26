@@ -78,7 +78,7 @@ function walk(dir)
   return data
 end
 
-function watch(dir, fn)
+function watch(fn, dir)
   @async while true
     event = watch_folder(dir)
 
