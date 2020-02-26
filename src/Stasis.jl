@@ -80,7 +80,7 @@ end
 
 function watch(fn, dir)
   while true
-    event = watch_folder(dir)
+    event = watch_file(dir)
 
     print(event)
 
