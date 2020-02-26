@@ -82,6 +82,8 @@ function watch(fn, dir)
   @async while true
     event = watch_folder(dir)
 
+    print(event)
+
     if event.changed
         fn()
     end
