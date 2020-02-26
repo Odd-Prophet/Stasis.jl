@@ -80,10 +80,12 @@ end
 
 function watch(fn, dir)
   while true
-    for file in glob(joinpath(dir, "**/*"))
-      @async begin
-        event = watch_file(file)
-        print(event)
+    @sync begin
+      for folder in glob(joinpath(dir, "*"))
+        @async begin
+          event = watch_folder(folder)
+          print(event)
+        end
       end
     end
   end
