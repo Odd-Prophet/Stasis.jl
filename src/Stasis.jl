@@ -79,7 +79,7 @@ function walk(dir)
 end
 
 function watch(fn, dir)
-  @async while true
+  while true
     event = watch_folder(dir)
 
     print(event)
