@@ -1,9 +1,10 @@
 module Stasis
-export build, copy, parse_markdown, parse_toml, serve, walk, watch
+export build, copy, parse, parse_markdown, parse_toml, serve, walk, watch
 
-using Affinity
+using Affinity  #, Organic
 using FileWatching, Glob, HTTP, Markdown, TOML
 
+# Build HTML page from affinity template
 function build(; template, output, params...)
   context = Dict()
 
@@ -24,26 +25,34 @@ function build(; template, output, params...)
   write(output, "<!DOCTYPE html>" * html)
 end
 
+# Copy static files
 function copy(; input, output)
   cp(input, output, force=true)
 end
 
-function parse_markdown(file)
-  data = Markdown.parse(split(read(file, String), "+++", limit=2, keepempty=false)[2])
+# Parse content and meta from org file
+function parse(file::AbstractString)
+  meta, content = Organic.parse(file)
 
-  for block in data.content
-    if typeof(block) == Markdown.LaTeX
-      block.formula = "\$" * block.formula * "\$"
-    end
-  end
-
-  return Markdown.html(data)
+  return meta, content
 end
 
-function parse_toml(file)
-  data = split(read(file, String), "+++", limit=2, keepempty=false)
-  return TOML.parse(data[1])
-end
+# function parse_markdown(file)
+#   data = Markdown.parse(split(read(file, String), "+++", limit=2, keepempty=false)[2])
+
+#   for block in data.content
+#     if typeof(block) == Markdown.LaTeX
+#       block.formula = "\$" * block.formula * "\$"
+#     end
+#   end
+
+#   return Markdown.html(data)
+# end
+
+# function parse_toml(file)
+#   data = split(read(file, String), "+++", limit=2, keepempty=false)
+#   return TOML.parse(data[1])
+# end
 
 function serve(dir)
   cd(dir)
