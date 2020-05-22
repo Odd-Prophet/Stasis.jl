@@ -1,7 +1,7 @@
 module Stasis
 export build, copy, parse, parse_markdown, parse_toml, serve, walk, watch
 
-using Affinity  #, Organic
+using Affinity, Organic
 using FileWatching, Glob, HTTP, Markdown, TOML
 
 # Build HTML page from affinity template
